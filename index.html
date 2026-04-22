@@ -26,7 +26,7 @@
             position: relative;
             z-index: 10;
         }
-        /* 1. 生日快乐文字放大 */
+        /* 顶部标题放大 */
         .title {
             font-size: 70px;
             color: #ffffff;
@@ -46,6 +46,19 @@
             color: #b3e5fc;
             margin: 10px 0;
         }
+
+        /* 初始隐藏：祝福语、蛋糕、署名 */
+        .wish, .cake, #signature {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease forwards;
+        }
+        /* 动画触发类 */
+        .show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
         .wish {
             font-size: 28px;
             color: #ffffff;
@@ -56,7 +69,7 @@
             font-size: 60px;
             margin: 20px 0;
         }
-        /* 2. 署名缩小 + 移到蛋糕下方 */
+        /* 署名样式 */
         #signature {
             font-size: 30px;
             color: #ffeb3b;
@@ -64,12 +77,13 @@
             text-shadow: 0 0 10px #ffeb3b;
             margin: 10px 0 20px 0;
             z-index: 15;
-            opacity: 0;
         }
+
+        /* 按钮样式 */
         #fireworkBtn {
-            margin-top: 10px;
-            padding: 15px 40px;
-            font-size: 22px;
+            margin-top: 30px;
+            padding: 18px 45px;
+            font-size: 24px;
             background: #4fc3f7;
             color: #0f2027;
             border: none;
@@ -77,12 +91,14 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
-            box-shadow: 0 0 20px rgba(41, 182, 246, 0.5);
+            box-shadow: 0 0 20px rgba(41, 182, 246, 0.8);
         }
         #fireworkBtn:hover {
             transform: scale(1.1);
             background: #81d4fa;
         }
+
+        /* 烟花画布 */
         #canvas {
             position: fixed;
             top: 0;
@@ -92,14 +108,10 @@
             pointer-events: none;
             z-index: 5;
         }
+
         @keyframes bounce {
             0%,100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-        @keyframes showText {
-            0% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -108,19 +120,21 @@
         <div class="title">生日快乐 🎉</div>
         <div class="name">单坷钰</div>
         <div class="age">喜迎19岁！</div>
+
+        <!-- 点击后显示的内容 -->
         <div class="wish">祝我的大学兄弟</div>
         <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
         <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
         <div class="cake">🎂</div>
-        <!-- 署名放在蛋糕下方 -->
         <div id="signature">from 许扬</div>
+
         <button id="fireworkBtn">绽放烟花</button>
     </div>
 
     <canvas id="canvas"></canvas>
 
-    <!-- 3. 音乐音量调至最大 -->
-    <audio id="birthdayMusic" loop volume="1">
+    <!-- 背景音乐 -->
+    <audio id="birthdayMusic" loop>
         <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
     </audio>
 
@@ -130,28 +144,30 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // ============== 强化版烟花效果 ==============
         class Firework {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = canvas.height;
-                this.speed = 8;
-                this.angle = Math.PI / 2 + (Math.random() - 0.5) * 1;
+                this.speed = 12; // 速度加快
+                this.angle = Math.PI / 2 + (Math.random() - 0.5) * 1.2;
                 this.dx = Math.cos(this.angle) * this.speed;
                 this.dy = Math.sin(this.angle) * this.speed;
                 this.alpha = 1;
-                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`; // 更亮
+                this.size = 5; // 粒子变大
             }
             update() {
                 this.x += this.dx;
                 this.y -= this.dy;
-                this.dy -= 0.1;
-                this.alpha -= 0.01;
+                this.dy -= 0.15;
+                this.alpha -= 0.008;
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
                 ctx.restore();
@@ -161,40 +177,47 @@
         let fireworks = [];
         let fireworkInterval;
         let isPlaying = false;
-        const signature = document.getElementById('signature');
         const btn = document.getElementById('fireworkBtn');
         const music = document.getElementById('birthdayMusic');
+        // 需要动画显示的元素
+        const animateElements = document.querySelectorAll('.wish, .cake, #signature');
 
+        // 点击按钮触发所有效果
         btn.addEventListener('click', () => {
             if(isPlaying) return;
             isPlaying = true;
             btn.style.display = 'none';
             
-            // 音量最大
+            // 播放音乐（最大音量）
             music.volume = 1;
             music.play().catch(e => console.log(e));
 
-            fireworkInterval = setInterval(() => {
-                fireworks.push(new Firework());
-            }, 200);
+            // 触发祝福语/蛋糕/署名 动画弹出
+            animateElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('show');
+                }, index * 200);
+            });
 
+            // 超密集炫酷烟花
+            fireworkInterval = setInterval(() => {
+                for(let i=0; i<3; i++){ // 一次发射3个
+                    fireworks.push(new Firework());
+                }
+            }, 100);
+
+            // 8秒后停止烟花
             setTimeout(() => {
                 clearInterval(fireworkInterval);
-                signature.style.animation = 'showText 2s forwards';
-                
-                let miniFire = setInterval(() => {
-                    fireworks.push(new Firework());
-                }, 300);
-                setTimeout(() => clearInterval(miniFire), 3000);
-
                 setTimeout(() => {
                     isPlaying = false;
-                }, 8000);
-            }, 5000);
+                }, 5000);
+            }, 8000);
         });
 
+        // 渲染烟花
         function render() {
-            ctx.fillStyle = 'rgba(15, 32, 39, 0.2)';
+            ctx.fillStyle = 'rgba(15, 32, 39, 0.3)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             fireworks.forEach((fire, index) => {
@@ -206,6 +229,7 @@
         }
         render();
 
+        // 窗口适配
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
