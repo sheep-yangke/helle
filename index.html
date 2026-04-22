@@ -22,13 +22,13 @@
             padding: 20px;
             color: #fff;
         }
-        /* 所有文字和按钮都设置高层级，确保在最上方 */
         .content-wrap {
             position: relative;
             z-index: 10;
         }
+        /* 1. 生日快乐文字放大 */
         .title {
-            font-size: 50px;
+            font-size: 70px;
             color: #ffffff;
             font-weight: bold;
             margin-bottom: 20px;
@@ -56,8 +56,18 @@
             font-size: 60px;
             margin: 20px 0;
         }
+        /* 2. 署名缩小 + 移到蛋糕下方 */
+        #signature {
+            font-size: 30px;
+            color: #ffeb3b;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffeb3b;
+            margin: 10px 0 20px 0;
+            z-index: 15;
+            opacity: 0;
+        }
         #fireworkBtn {
-            margin-top: 30px;
+            margin-top: 10px;
             padding: 15px 40px;
             font-size: 22px;
             background: #4fc3f7;
@@ -73,20 +83,6 @@
             transform: scale(1.1);
             background: #81d4fa;
         }
-        /* 署名动画 */
-        #signature {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 50px;
-            color: #ffeb3b;
-            font-weight: bold;
-            text-shadow: 0 0 20px #ffeb3b, 0 0 40px #ff9800;
-            opacity: 0;
-            z-index: 15;
-        }
-        /* 烟花画布层级最低 */
         #canvas {
             position: fixed;
             top: 0;
@@ -101,14 +97,13 @@
             50% { transform: translateY(-10px); }
         }
         @keyframes showText {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <!-- 生日祝福主体，包裹在content-wrap里确保层级正确 -->
     <div class="content-wrap">
         <div class="title">生日快乐 🎉</div>
         <div class="name">单坷钰</div>
@@ -117,24 +112,19 @@
         <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
         <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
         <div class="cake">🎂</div>
-        
-        <!-- 烟花按钮 -->
+        <!-- 署名放在蛋糕下方 -->
+        <div id="signature">from 许扬</div>
         <button id="fireworkBtn">绽放烟花</button>
     </div>
 
-    <!-- 署名 -->
-    <div id="signature">from 许扬</div>
-
-    <!-- 烟花画布 -->
     <canvas id="canvas"></canvas>
 
-    <!-- 生日快乐音乐，改为点击按钮后播放，解决浏览器限制 -->
-    <audio id="birthdayMusic" loop>
+    <!-- 3. 音乐音量调至最大 -->
+    <audio id="birthdayMusic" loop volume="1">
         <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
-    
+    </audio>
 
     <script>
-        // 烟花核心逻辑
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -175,27 +165,23 @@
         const btn = document.getElementById('fireworkBtn');
         const music = document.getElementById('birthdayMusic');
 
-        // 点击按钮触发烟花 + 播放音乐
         btn.addEventListener('click', () => {
             if(isPlaying) return;
             isPlaying = true;
             btn.style.display = 'none';
             
-            // 播放生日歌
-            music.play().catch(e => console.log("音乐播放限制:", e));
+            // 音量最大
+            music.volume = 1;
+            music.play().catch(e => console.log(e));
 
-            // 连续发射烟花
             fireworkInterval = setInterval(() => {
                 fireworks.push(new Firework());
             }, 200);
 
-            // 5秒后停止烟花，显示署名
             setTimeout(() => {
                 clearInterval(fireworkInterval);
-                // 显示 from 许扬 动画
                 signature.style.animation = 'showText 2s forwards';
                 
-                // 署名伴随小烟花
                 let miniFire = setInterval(() => {
                     fireworks.push(new Firework());
                 }, 300);
@@ -207,7 +193,6 @@
             }, 5000);
         });
 
-        // 渲染动画
         function render() {
             ctx.fillStyle = 'rgba(15, 32, 39, 0.2)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
