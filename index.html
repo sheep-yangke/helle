@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 手机端响应式适配关键 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>祝单坷钰19岁生日快乐！</title>
     <style>
         * {
@@ -15,13 +16,12 @@
             background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            /* 关键：横向禁止滚动，纵向可滚动，防止内容被裁剪 */
+            overflow-x: hidden;
+            overflow-y: auto;
             font-family: "微软雅黑", sans-serif;
-            text-align: center;
-            padding: 20px;
             color: #fff;
-            overflow: hidden;
+            padding: 20px 10px;
         }
         .content-wrap {
             position: relative;
@@ -30,26 +30,35 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            min-height: calc(100vh - 40px);
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        /* 初始标题放大、居中 */
+
+        /* 响应式字体：自动适配手机/电脑屏幕 */
         .title {
-            font-size: 80px;
+            /* 手机端最小40px，电脑端最大80px，随屏幕宽度自动缩放 */
+            font-size: clamp(40px, 15vw, 80px);
             color: #ffffff;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             animation: bounce 2s infinite;
             text-shadow: 0 0 20px rgba(79, 195, 247, 0.9);
+            text-align: center;
         }
         .name {
-            font-size: 70px;
+            font-size: clamp(35px, 12vw, 70px);
             color: #4fc3f7;
-            margin: 15px 0;
+            margin: 10px 0;
             text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(79, 195, 247, 0.7);
+            text-align: center;
         }
         .age {
-            font-size: 40px;
+            font-size: clamp(20px, 8vw, 40px);
             color: #b3e5fc;
-            margin: 10px 0;
+            margin: 8px 0 20px 0;
+            text-align: center;
         }
 
         /* 初始隐藏：祝福语、蛋糕、署名 */
@@ -58,37 +67,36 @@
             transform: translateY(30px);
             transition: all 0.8s ease forwards;
         }
-        /* 点击后显示动画 */
         .show {
             opacity: 1 !important;
             transform: translateY(0) !important;
         }
 
         .wish {
-            font-size: 28px;
+            font-size: clamp(18px, 6vw, 28px);
             color: #ffffff;
-            margin: 15px 0;
+            margin: 12px 0;
             line-height: 1.6;
+            text-align: center;
+            width: 100%;
         }
         .cake {
-            font-size: 60px;
+            font-size: clamp(40px, 10vw, 60px);
             margin: 20px 0;
         }
-        /* 署名样式 */
         #signature {
-            font-size: 30px;
+            font-size: clamp(20px, 6vw, 30px);
             color: #ffeb3b;
             font-weight: bold;
             text-shadow: 0 0 10px #ffeb3b;
-            margin: 10px 0 20px 0;
+            margin: 10px 0 30px 0;
             z-index: 15;
         }
 
-        /* 按钮样式 */
+        /* 按钮适配手机/电脑 */
         #fireworkBtn {
-            margin-top: 40px;
-            padding: 20px 50px;
-            font-size: 26px;
+            padding: clamp(12px, 4vw, 20px) clamp(24px, 8vw, 50px);
+            font-size: clamp(18px, 6vw, 26px);
             background: #4fc3f7;
             color: #0f2027;
             border: none;
@@ -97,13 +105,14 @@
             font-weight: bold;
             transition: 0.3s;
             box-shadow: 0 0 25px rgba(41, 182, 246, 0.8);
+            margin-top: 10px;
         }
         #fireworkBtn:hover {
             transform: scale(1.1);
             background: #81d4fa;
         }
 
-        /* 烟花画布 */
+        /* 烟花画布适配 */
         #canvas {
             position: fixed;
             top: 0;
@@ -122,7 +131,7 @@
 </head>
 <body>
     <div class="content-wrap">
-        <!-- 初始显示的放大标题 -->
+        <!-- 初始显示的放大标题（已适配手机） -->
         <div class="title">生日快乐 🎉</div>
         <div class="name">单坷钰</div>
         <div class="age">喜迎19岁！</div>
@@ -185,7 +194,6 @@
         let isPlaying = false;
         const btn = document.getElementById('fireworkBtn');
         const music = document.getElementById('birthdayMusic');
-        // 需要动画显示的元素
         const animateElements = document.querySelectorAll('.wish, .cake, #signature');
 
         // 点击按钮触发所有效果
@@ -198,7 +206,7 @@
             music.volume = 1;
             music.play().catch(e => console.log(e));
 
-            // 依次触发祝福语/蛋糕/署名 动画弹出
+            // 依次触发动画
             animateElements.forEach((el, index) => {
                 setTimeout(() => {
                     el.classList.add('show');
