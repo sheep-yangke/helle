@@ -21,28 +21,33 @@
             text-align: center;
             padding: 20px;
             color: #fff;
+            overflow: hidden;
         }
         .content-wrap {
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        /* 顶部标题放大 */
+        /* 初始标题放大、居中 */
         .title {
-            font-size: 70px;
+            font-size: 80px;
             color: #ffffff;
             font-weight: bold;
             margin-bottom: 20px;
             animation: bounce 2s infinite;
-            text-shadow: 0 0 15px rgba(79, 195, 247, 0.8);
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.9);
         }
         .name {
-            font-size: 60px;
+            font-size: 70px;
             color: #4fc3f7;
             margin: 15px 0;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(79, 195, 247, 0.6);
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(79, 195, 247, 0.7);
         }
         .age {
-            font-size: 36px;
+            font-size: 40px;
             color: #b3e5fc;
             margin: 10px 0;
         }
@@ -53,7 +58,7 @@
             transform: translateY(30px);
             transition: all 0.8s ease forwards;
         }
-        /* 动画触发类 */
+        /* 点击后显示动画 */
         .show {
             opacity: 1 !important;
             transform: translateY(0) !important;
@@ -81,9 +86,9 @@
 
         /* 按钮样式 */
         #fireworkBtn {
-            margin-top: 30px;
-            padding: 18px 45px;
-            font-size: 24px;
+            margin-top: 40px;
+            padding: 20px 50px;
+            font-size: 26px;
             background: #4fc3f7;
             color: #0f2027;
             border: none;
@@ -91,7 +96,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
-            box-shadow: 0 0 20px rgba(41, 182, 246, 0.8);
+            box-shadow: 0 0 25px rgba(41, 182, 246, 0.8);
         }
         #fireworkBtn:hover {
             transform: scale(1.1);
@@ -117,11 +122,12 @@
 </head>
 <body>
     <div class="content-wrap">
+        <!-- 初始显示的放大标题 -->
         <div class="title">生日快乐 🎉</div>
         <div class="name">单坷钰</div>
         <div class="age">喜迎19岁！</div>
 
-        <!-- 点击后显示的内容 -->
+        <!-- 点击后才显示的内容 -->
         <div class="wish">祝我的大学兄弟</div>
         <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
         <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
@@ -133,10 +139,10 @@
 
     <canvas id="canvas"></canvas>
 
-    <!-- 背景音乐 -->
+    <!-- 背景音乐（最大音量） -->
     <audio id="birthdayMusic" loop>
         <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
-    </audio>
+    
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -144,18 +150,18 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // ============== 强化版烟花效果 ==============
+        // 强化版烟花效果
         class Firework {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = canvas.height;
-                this.speed = 12; // 速度加快
+                this.speed = 12;
                 this.angle = Math.PI / 2 + (Math.random() - 0.5) * 1.2;
                 this.dx = Math.cos(this.angle) * this.speed;
                 this.dy = Math.sin(this.angle) * this.speed;
                 this.alpha = 1;
-                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`; // 更亮
-                this.size = 5; // 粒子变大
+                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
+                this.size = 5;
             }
             update() {
                 this.x += this.dx;
@@ -192,7 +198,7 @@
             music.volume = 1;
             music.play().catch(e => console.log(e));
 
-            // 触发祝福语/蛋糕/署名 动画弹出
+            // 依次触发祝福语/蛋糕/署名 动画弹出
             animateElements.forEach((el, index) => {
                 setTimeout(() => {
                     el.classList.add('show');
@@ -201,7 +207,7 @@
 
             // 超密集炫酷烟花
             fireworkInterval = setInterval(() => {
-                for(let i=0; i<3; i++){ // 一次发射3个
+                for(let i=0; i<3; i++){
                     fireworks.push(new Firework());
                 }
             }, 100);
