@@ -21,49 +21,41 @@
             text-align: center;
             padding: 20px;
             color: #fff;
-            overflow: hidden;
         }
-        /* 关键修改：给所有祝福文字设置层级，确保在烟花上方 */
-        .title, .name, .age, .wish, .cake, #fireworkBtn {
+        /* 所有文字和按钮都设置高层级，确保在最上方 */
+        .content-wrap {
             position: relative;
             z-index: 10;
         }
         .title {
             font-size: 50px;
-            color: #ffffff; /* 改成白色，对比度拉满 */
+            color: #ffffff;
             font-weight: bold;
             margin-bottom: 20px;
             animation: bounce 2s infinite;
-            text-shadow: 0 0 15px rgba(0, 188, 212, 0.8); /* 加发光阴影，更醒目 */
+            text-shadow: 0 0 15px rgba(79, 195, 247, 0.8);
         }
         .name {
             font-size: 60px;
-            color: #4fc3f7; /* 亮蓝色，适配深色背景 */
+            color: #4fc3f7;
             margin: 15px 0;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(79, 195, 247, 0.6);
         }
         .age {
             font-size: 36px;
-            color: #b3e5fc; /* 亮浅蓝色，柔和不刺眼 */
+            color: #b3e5fc;
             margin: 10px 0;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
         }
         .wish {
             font-size: 28px;
-            color: #ffffff; /* 白色文字，清晰可见 */
+            color: #ffffff;
             margin: 15px 0;
             line-height: 1.6;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
         }
         .cake {
+            font-size: 60px;
             margin: 20px 0;
         }
-        .cake::before {
-            content: "🎂";
-            font-size: 60px;
-            animation: rotate 3s linear infinite;
-        }
-        /* 烟花按钮 */
         #fireworkBtn {
             margin-top: 30px;
             padding: 15px 40px;
@@ -81,7 +73,7 @@
             transform: scale(1.1);
             background: #81d4fa;
         }
-        /* 署名动画，层级更高 */
+        /* 署名动画 */
         #signature {
             position: fixed;
             top: 50%;
@@ -94,8 +86,8 @@
             opacity: 0;
             z-index: 15;
         }
-        /* 烟花画布，层级低于文字，不会遮挡内容 */
-        canvas {
+        /* 烟花画布层级最低 */
+        #canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -104,16 +96,9 @@
             pointer-events: none;
             z-index: 5;
         }
-        audio {
-            display: none;
-        }
         @keyframes bounce {
             0%,100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         @keyframes showText {
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
@@ -123,28 +108,30 @@
     </style>
 </head>
 <body>
-    <!-- 生日快乐背景音乐 -->
-    <audio autoplay loop>
-        <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
-    
+    <!-- 生日祝福主体，包裹在content-wrap里确保层级正确 -->
+    <div class="content-wrap">
+        <div class="title">生日快乐 🎉</div>
+        <div class="name">单坷钰</div>
+        <div class="age">喜迎19岁！</div>
+        <div class="wish">祝我的大学兄弟</div>
+        <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
+        <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
+        <div class="cake">🎂</div>
+        
+        <!-- 烟花按钮 -->
+        <button id="fireworkBtn">绽放烟花</button>
+    </div>
 
-    <!-- 生日祝福主体 -->
-    <div class="title">生日快乐 🎉</div>
-    <div class="name">单坷钰</div>
-    <div class="age">喜迎19岁！</div>
-    <div class="wish">祝我的大学兄弟</div>
-    <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
-    <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
-    <div class="cake"></div>
-    
-    <!-- 烟花按钮 -->
-    <button id="fireworkBtn">绽放烟花</button>
-    
     <!-- 署名 -->
     <div id="signature">from 许扬</div>
 
     <!-- 烟花画布 -->
     <canvas id="canvas"></canvas>
+
+    <!-- 生日快乐音乐，改为点击按钮后播放，解决浏览器限制 -->
+    <audio id="birthdayMusic" loop>
+        <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
+    
 
     <script>
         // 烟花核心逻辑
@@ -186,13 +173,17 @@
         let isPlaying = false;
         const signature = document.getElementById('signature');
         const btn = document.getElementById('fireworkBtn');
+        const music = document.getElementById('birthdayMusic');
 
-        // 点击按钮触发烟花
+        // 点击按钮触发烟花 + 播放音乐
         btn.addEventListener('click', () => {
             if(isPlaying) return;
             isPlaying = true;
             btn.style.display = 'none';
             
+            // 播放生日歌
+            music.play().catch(e => console.log("音乐播放限制:", e));
+
             // 连续发射烟花
             fireworkInterval = setInterval(() => {
                 fireworks.push(new Firework());
