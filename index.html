@@ -23,30 +23,37 @@
             color: #fff;
             overflow: hidden;
         }
-        /* 生日祝福文字 */
+        /* 关键修改：给所有祝福文字设置层级，确保在烟花上方 */
+        .title, .name, .age, .wish, .cake, #fireworkBtn {
+            position: relative;
+            z-index: 10;
+        }
         .title {
             font-size: 50px;
-            color: #4fc3f7;
+            color: #ffffff; /* 改成白色，对比度拉满 */
             font-weight: bold;
             margin-bottom: 20px;
             animation: bounce 2s infinite;
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.8); /* 加发光阴影，更醒目 */
         }
         .name {
             font-size: 60px;
-            color: #29b6f6;
+            color: #4fc3f7; /* 亮蓝色，适配深色背景 */
             margin: 15px 0;
-            text-shadow: 2px 2px 8px rgba(0, 188, 212, 0.5);
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(79, 195, 247, 0.6);
         }
         .age {
             font-size: 36px;
-            color: #81d4fa;
+            color: #b3e5fc; /* 亮浅蓝色，柔和不刺眼 */
             margin: 10px 0;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
         }
         .wish {
             font-size: 28px;
-            color: #e0f7fa;
+            color: #ffffff; /* 白色文字，清晰可见 */
             margin: 15px 0;
             line-height: 1.6;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
         }
         .cake {
             margin: 20px 0;
@@ -61,7 +68,7 @@
             margin-top: 30px;
             padding: 15px 40px;
             font-size: 22px;
-            background: #29b6f6;
+            background: #4fc3f7;
             color: #0f2027;
             border: none;
             border-radius: 50px;
@@ -72,9 +79,9 @@
         }
         #fireworkBtn:hover {
             transform: scale(1.1);
-            background: #4fc3f7;
+            background: #81d4fa;
         }
-        /* 署名动画 */
+        /* 署名动画，层级更高 */
         #signature {
             position: fixed;
             top: 50%;
@@ -85,9 +92,9 @@
             font-weight: bold;
             text-shadow: 0 0 20px #ffeb3b, 0 0 40px #ff9800;
             opacity: 0;
-            z-index: 10;
+            z-index: 15;
         }
-        /* 烟花画布 */
+        /* 烟花画布，层级低于文字，不会遮挡内容 */
         canvas {
             position: fixed;
             top: 0;
@@ -119,7 +126,7 @@
     <!-- 生日快乐背景音乐 -->
     <audio autoplay loop>
         <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
-    </audio>
+    
 
     <!-- 生日祝福主体 -->
     <div class="title">生日快乐 🎉</div>
@@ -127,6 +134,7 @@
     <div class="age">喜迎19岁！</div>
     <div class="wish">祝我的大学兄弟</div>
     <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
+    <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
     <div class="cake"></div>
     
     <!-- 烟花按钮 -->
@@ -228,5 +236,4 @@
         });
     </script>
 </body>
-</html>
 </html>
