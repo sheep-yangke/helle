@@ -2,236 +2,232 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>祝单坷钰19岁生日快乐！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>母亲节快乐 · 致我最爱的妈妈</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-        /* 全局强制文字居中 */
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: "微软雅黑", sans-serif;
-            color: #fff;
-            padding: 20px 10px;
-            text-align: center !important;
-            overflow-x: hidden;
-        }
-        .content-wrap {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 600px;
-            text-align: center !important;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
         }
 
-        /* 响应式字体 + 百分百居中 */
+        body {
+            background: linear-gradient(to bottom, #FFF9F9, #F8E8EE);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 顶部标题区 */
+        .header {
+            margin: 50px 0 20px;
+        }
         .title {
-            font-size: clamp(40px, 15vw, 80px);
-            color: #ffffff;
+            font-size: 32px;
+            color: #D885A3;
             font-weight: bold;
             margin-bottom: 10px;
-            animation: bounce 2s infinite;
-            text-shadow: 0 0 20px rgba(79, 195, 247, 0.9);
-            text-align: center !important;
         }
-        .name {
-            font-size: clamp(35px, 12vw, 70px);
-            color: #4fc3f7;
-            margin: 10px 0;
-            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(79, 195, 247, 0.7);
-            text-align: center !important;
-        }
-        .age {
-            font-size: clamp(20px, 8vw, 40px);
-            color: #b3e5fc;
-            margin: 8px 0 20px 0;
-            text-align: center !important;
+        .subtitle {
+            font-size: 18px;
+            color: #666;
         }
 
-        /* 初始隐藏动画元素 */
-        .wish, .cake, #signature {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease forwards;
-            text-align: center !important;
-        }
-        .show {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-
-        .wish {
-            font-size: clamp(18px, 6vw, 28px);
-            color: #ffffff;
-            margin: 12px 0;
-            line-height: 1.6;
-        }
-        .cake {
-            font-size: clamp(40px, 10vw, 60px);
+        /* 上传照片按钮 */
+        .upload-box {
             margin: 20px 0;
         }
-        #signature {
-            font-size: clamp(20px, 6vw, 30px);
-            color: #ffeb3b;
-            font-weight: bold;
-            text-shadow: 0 0 10px #ffeb3b;
-            margin: 10px 0 30px 0;
-            z-index: 15;
+        #photoUpload {
+            display: none;
+        }
+        .upload-btn {
+            padding: 10px 25px;
+            background: #D885A3;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .upload-btn:hover {
+            opacity: 0.9;
+        }
+        .upload-tip {
+            font-size: 14px;
+            color: #999;
+            margin-top: 8px;
         }
 
-        /* 按钮样式 */
-        #fireworkBtn {
-            padding: clamp(12px, 4vw, 20px) clamp(24px, 8vw, 50px);
-            font-size: clamp(18px, 6vw, 26px);
-            background: #4fc3f7;
-            color: #0f2027;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            box-shadow: 0 0 25px rgba(41, 182, 246, 0.8);
-            margin: 0 auto;
+        /* 照片轮播区 */
+        .swiper-box {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(216, 133, 163, 0.15);
+            overflow: hidden;
+        }
+        .swiper-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
             display: block;
         }
-        #fireworkBtn:hover {
-            transform: scale(1.1);
-            background: #81d4fa;
+        .img-desc {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #D885A3;
+            font-size: 16px;
+        }
+        .swiper-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            color: #D885A3;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        /* 祝福文案区 */
+        .blessing {
+            margin: 60px 0;
+            padding: 0 20px;
+        }
+        .blessing p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 2;
+        }
+        .blessing .highlight {
+            color: #F5B895;
+            font-weight: bold;
         }
 
-        /* 烟花画布 */
-        #canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
+        /* 底部署名区 */
+        .footer {
+            margin: 50px 0 30px;
+            color: #999;
+            font-size: 16px;
+        }
+        .footer span {
+            color: #D885A3;
         }
 
-        @keyframes bounce {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .title { font-size: 26px; }
+            .swiper-img { height: 300px; }
+            .blessing p { font-size: 16px; }
         }
     </style>
 </head>
 <body>
-    <div class="content-wrap">
-        <div class="title">生日快乐 🎉</div>
-        <div class="name">单坷钰</div>
-        <div class="age">喜迎19岁！</div>
+    <div class="container">
+        <!-- 标题区 -->
+        <div class="header">
+            <h1 class="title">❤️ 母亲节快乐 · 致我最爱的妈妈 ❤️</h1>
+            <p class="subtitle">谢谢你陪我长大，你永远是我的人间温柔</p>
+        </div>
 
-        <div class="wish">祝我的大学兄弟</div>
-        <div class="wish">岁岁常欢愉，年年皆胜意✨</div>
-        <div class="wish">愿你永远热烈自由，前路坦荡，万事顺意！</div>
-        <div class="cake">🎂</div>
-        <div id="signature">from 许扬</div>
+        <!-- 上传照片区域（核心功能） -->
+        <div class="upload-box">
+            <label for="photoUpload" class="upload-btn">📸 上传妈妈的照片</label>
+            <input type="file" id="photoUpload" accept="image/*" multiple>
+            <p class="upload-tip">支持多选图片，最多上传 9 张，自动轮播展示</p>
+        </div>
 
-        <button id="fireworkBtn">绽放烟花</button>
+        <!-- 照片轮播区 -->
+        <div class="swiper-box">
+            <button class="swiper-btn prev" onclick="prevImg()">‹</button>
+            <img id="swiperImg" class="swiper-img" src="https://picsum.photos/600/400" alt="母亲照片">
+            <p id="imgDesc" class="img-desc">妈妈最美的模样</p>
+            <button class="swiper-btn next" onclick="nextImg()">›</button>
+        </div>
+
+        <!-- 祝福文案 -->
+        <div class="blessing">
+            <p>感谢你用一生的温柔与付出，守护我长大，包容我的所有小脾气。</p>
+            <p>岁月从不败美人，愿我的妈妈<span class="highlight">平安健康、永远开心、岁月温柔以待</span>。</p>
+            <p>你陪我蹒跚学步，我陪你夕阳漫步，余生漫漫，我会一直爱你。</p>
+        </div>
+
+        <!-- 署名 -->
+        <div class="footer">
+            <span>💐</span> 爱你的孩子：XXX · 20XX年母亲节 <span>💐</span>
+        </div>
     </div>
 
-    <canvas id="canvas"></canvas>
-
-    <audio id="birthdayMusic" loop>
-        <source src="https://cdn.jsdelivr.net/gh/happybirthdaymusic/happybirthday.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // 照片数组（上传后自动替换，无需手动修改）
+        let photoList = [];
+        let currentIndex = 0;
+        const imgDom = document.getElementById("swiperImg");
+        const descDom = document.getElementById("imgDesc");
+        const uploadDom = document.getElementById("photoUpload");
 
-        class Firework {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height;
-                this.speed = 12;
-                this.angle = Math.PI / 2 + (Math.random() - 0.5) * 1.2;
-                this.dx = Math.cos(this.angle) * this.speed;
-                this.dy = Math.sin(this.angle) * this.speed;
-                this.alpha = 1;
-                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
-                this.size = 5;
-            }
-            update() {
-                this.x += this.dx;
-                this.y -= this.dy;
-                this.dy -= 0.15;
-                this.alpha -= 0.008;
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        let fireworks = [];
-        let fireworkInterval;
-        let isPlaying = false;
-        const btn = document.getElementById('fireworkBtn');
-        const music = document.getElementById('birthdayMusic');
-        const animateElements = document.querySelectorAll('.wish, .cake, #signature');
-
-        btn.addEventListener('click', () => {
-            if(isPlaying) return;
-            isPlaying = true;
-            btn.style.display = 'none';
+        // 监听图片上传（核心：上传文件替换照片）
+        uploadDom.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (!files.length) return;
+            // 限制最多9张照片
+            const maxFiles = 9;
+            const validFiles = Array.from(files).slice(0, maxFiles);
             
-            music.volume = 1;
-            music.play().catch(e => console.log(e));
-
-            animateElements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.classList.add('show');
-                }, index * 200);
+            // 清空原有照片
+            photoList = [];
+            // 生成本地图片预览链接
+            validFiles.forEach(file => {
+                const imgUrl = URL.createObjectURL(file);
+                photoList.push({ url: imgUrl, desc: "妈妈最美的模样" });
             });
-
-            fireworkInterval = setInterval(() => {
-                for(let i=0; i<3; i++){
-                    fireworks.push(new Firework());
-                }
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(fireworkInterval);
-                setTimeout(() => {
-                    isPlaying = false;
-                }, 5000);
-            }, 8000);
+            
+            // 重置轮播并显示第一张
+            currentIndex = 0;
+            showPhoto();
         });
 
-        function render() {
-            ctx.fillStyle = 'rgba(15, 32, 39, 0.3)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            fireworks.forEach((fire, index) => {
-                fire.update();
-                fire.draw();
-                if(fire.alpha <= 0) fireworks.splice(index, 1);
-            });
-            requestAnimationFrame(render);
+        // 显示当前照片
+        function showPhoto() {
+            if (photoList.length === 0) return;
+            imgDom.src = photoList[currentIndex].url;
+            descDom.innerText = photoList[currentIndex].desc;
         }
-        render();
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        // 上一张
+        function prevImg() {
+            if (photoList.length === 0) return;
+            currentIndex = (currentIndex - 1 + photoList.length) % photoList.length;
+            showPhoto();
+        }
+
+        // 下一张
+        function nextImg() {
+            if (photoList.length === 0) return;
+            currentIndex = (currentIndex + 1) % photoList.length;
+            showPhoto();
+        }
+
+        // 自动轮播
+        setInterval(nextImg, 3000);
     </script>
 </body>
 </html>
