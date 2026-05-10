@@ -3,50 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>母亲节快乐 · 致我最爱的妈妈</title>
+    <title>母亲节快乐</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            font-family: "Microsoft YaHei", "楷体", sans-serif;
         }
 
         body {
             background: linear-gradient(to bottom, #FFF9F9, #F8E8EE);
             min-height: 100vh;
-            padding: 20px;
-            color: #333;
-            line-height: 1.8;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        /* 两侧对联 竖排固定 */
+        .couplet-left, .couplet-right {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            color: #c86b85;
+            letter-spacing: 6px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            opacity: 0.85;
+        }
+        .couplet-left {
+            left: 30px;
+        }
+        .couplet-right {
+            right: 30px;
+        }
+
+        /* 页面容器 默认隐藏 */
+        .page {
+            width: 100vw;
+            height: 100vh;
+            display: none;
             text-align: center;
+            padding: 20px;
+        }
+        /* 默认显示第一页 */
+        .page1 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .header {
-            margin: 50px 0 20px;
-        }
-        .title {
-            font-size: 32px;
-            color: #D885A3;
+        /* 第一页 超大标题 */
+        .main-title {
+            font-size: 60px;
+            color: #c86b85;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 50px;
+            letter-spacing: 8px;
         }
-        .subtitle {
+        .enter-btn {
+            padding: 15px 40px;
+            background: #c86b85;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
             font-size: 18px;
-            color: #666;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .enter-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
         }
 
+        /* 第二页 照片轮播样式 */
         .swiper-box {
             position: relative;
             width: 100%;
             max-width: 600px;
-            margin: 30px auto;
+            margin: 40px auto;
             border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(216, 133, 163, 0.15);
+            box-shadow: 0 8px 25px rgba(200, 107, 133, 0.15);
             overflow: hidden;
         }
         .swiper-img {
@@ -57,8 +94,8 @@
         }
         .img-desc {
             padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #D885A3;
+            background: rgba(255,255,255,0.9);
+            color: #c86b85;
             font-size: 16px;
         }
         .swiper-btn {
@@ -67,11 +104,11 @@
             transform: translateY(-50%);
             width: 40px;
             height: 40px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255,255,255,0.8);
             border: none;
             border-radius: 50%;
             font-size: 20px;
-            color: #D885A3;
+            color: #c86b85;
             cursor: pointer;
             z-index: 10;
         }
@@ -79,93 +116,99 @@
         .next { right: 15px; }
 
         .blessing {
-            margin: 60px 0;
-            padding: 0 20px;
-        }
-        .blessing p {
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 20px;
+            max-width: 700px;
+            margin: 0 auto;
             line-height: 2;
+            color: #555;
+            font-size: 17px;
         }
-        .blessing .highlight {
-            color: #F5B895;
-            font-weight: bold;
-        }
-
-        .footer {
-            margin: 50px 0 30px;
-            color: #999;
+        .back-btn {
+            margin-top: 40px;
+            padding: 12px 35px;
+            background: #c86b85;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
             font-size: 16px;
-        }
-        .footer span {
-            color: #D885A3;
+            cursor: pointer;
         }
 
+        /* 移动端适配 */
         @media (max-width: 600px) {
-            .title { font-size: 26px; }
-            .swiper-img { height: 300px; }
-            .blessing p { font-size: 16px; }
+            .main-title { font-size: 36px; letter-spacing: 4px; }
+            .couplet-left { left: 10px; font-size: 18px; }
+            .couplet-right { right: 10px; font-size: 18px; }
+            .swiper-img { height: 280px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">❤️ 母亲节快乐 · 致我最爱的妈妈 ❤️</h1>
-            <p class="subtitle">谢谢你陪我长大，你永远是我的人间温柔</p>
-        </div>
+    <!-- 两侧对联 -->
+    <div class="couplet-left">春晖润养育恩深</div>
+    <div class="couplet-right">慈爱暖心岁月长</div>
 
+    <!-- 第一页：首页大标题 -->
+    <div class="page page1">
+        <h1 class="main-title">母亲节快乐</h1>
+        <button class="enter-btn" onclick="goPage2()">点击查看妈妈照片</button>
+    </div>
+
+    <!-- 第二页：照片展示页 -->
+    <div class="page page2">
         <div class="swiper-box">
             <button class="swiper-btn prev" onclick="prevImg()">‹</button>
-            <img id="swiperImg" class="swiper-img" alt="母亲照片">
+            <img id="swiperImg" class="swiper-img" alt="妈妈照片">
             <p id="imgDesc" class="img-desc"></p>
             <button class="swiper-btn next" onclick="nextImg()">›</button>
         </div>
 
         <div class="blessing">
-            <p>感谢你用一生的温柔与付出，守护我长大，包容我的所有小脾气。</p>
-            <p>岁月从不败美人，愿我的妈妈<span class="highlight">平安健康、永远开心、岁月温柔以待</span>。</p>
-            <p>你陪我蹒跚学步，我陪你夕阳漫步，余生漫漫，我会一直爱你。</p>
+            <p>感谢您默默付出，温柔伴我岁岁年年</p>
+            <p>愿时光温柔以待，愿妈妈永远平安喜乐、康健无忧</p>
         </div>
 
-        <div class="footer">
-            <span>💐</span> 爱你的孩子:许扬呀 · 2026年母亲节 <span>💐</span>
-        </div>
+        <button class="back-btn" onclick="goPage1()">返回首页</button>
     </div>
 
     <script>
-        // ✅ 核心：加载 GitHub 仓库内的本地图片（同级文件）
+        // 切换页面
+        function goPage1(){
+            document.querySelector('.page1').style.display = 'flex';
+            document.querySelector('.page2').style.display = 'none';
+        }
+        function goPage2(){
+            document.querySelector('.page1').style.display = 'none';
+            document.querySelector('.page2').style.display = 'block';
+        }
+
+        // 读取仓库本地照片 1.jpg 2.jpg 3.jpg
         let photoList = [
-            { url: "1.png", desc: "妈妈最美的模样" },
-            { url: "2.png", desc: "陪我长大的你" },
-            { url: "3.png", desc: "永远温柔的妈妈" }
+            { url: "1.png", desc: "我最亲爱的妈妈" },
+            { url: "2.png", desc: "岁月温柔，感恩有你" },
+            { url: "3.png", desc: "愿妈妈永远美好" }
         ];
 
         let currentIndex = 0;
         const imgDom = document.getElementById("swiperImg");
         const descDom = document.getElementById("imgDesc");
 
-        window.onload = function(){
-            showPhoto();
-        };
-
-        function showPhoto() {
+        function showPhoto(){
             imgDom.src = photoList[currentIndex].url;
             descDom.innerText = photoList[currentIndex].desc;
         }
-
-        function prevImg() {
+        function prevImg(){
             currentIndex = (currentIndex - 1 + photoList.length) % photoList.length;
             showPhoto();
         }
-
-        function nextImg() {
+        function nextImg(){
             currentIndex = (currentIndex + 1) % photoList.length;
             showPhoto();
         }
 
+        // 自动轮播
         setInterval(nextImg, 3000);
+        // 页面加载初始化照片
+        window.onload = showPhoto;
     </script>
 </body>
 </html>
