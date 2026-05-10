@@ -18,34 +18,31 @@
             overflow: hidden;
         }
 
-        /* 两侧对联 竖排固定 */
+        /* 两侧竖版对联 */
         .couplet-left, .couplet-right {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 22px;
+            font-size: 24px;
             color: #c86b85;
-            letter-spacing: 6px;
+            letter-spacing: 8px;
             writing-mode: vertical-rl;
             text-orientation: upright;
-            opacity: 0.85;
+            opacity: 0.9;
+            z-index: 9;
         }
-        .couplet-left {
-            left: 30px;
-        }
-        .couplet-right {
-            right: 30px;
-        }
+        .couplet-left { left: 40px; }
+        .couplet-right { right: 40px; }
 
-        /* 页面容器 默认隐藏 */
+        /* 通用页面样式 */
         .page {
             width: 100vw;
             height: 100vh;
             display: none;
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
+            position: relative;
         }
-        /* 默认显示第一页 */
         .page1 {
             display: flex;
             flex-direction: column;
@@ -53,16 +50,44 @@
             align-items: center;
         }
 
-        /* 第一页 超大标题 */
+        /* 装饰小花元素 */
+        .decor {
+            position: absolute;
+            color: #e8a8b8;
+            font-size: 28px;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        .d1 { top: 15%; left: 15%; }
+        .d2 { top: 20%; right: 15%; }
+        .d3 { bottom: 20%; left: 18%; }
+        .d4 { bottom: 15%; right: 18%; }
+
+        /* 第一页主标题 */
         .main-title {
-            font-size: 60px;
+            font-size: 66px;
             color: #c86b85;
             font-weight: bold;
-            margin-bottom: 50px;
-            letter-spacing: 8px;
+            letter-spacing: 10px;
+            margin-bottom: 30px;
+            z-index: 2;
+            position: relative;
         }
+
+        /* 第一页祝福语 */
+        .page1-bless {
+            max-width: 600px;
+            font-size: 19px;
+            color: #666;
+            line-height: 2.2;
+            margin: 20px 0 40px;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* 进入按钮 */
         .enter-btn {
-            padding: 15px 40px;
+            padding: 14px 45px;
             background: #c86b85;
             color: #fff;
             border: none;
@@ -70,91 +95,142 @@
             font-size: 18px;
             cursor: pointer;
             transition: 0.3s;
+            z-index: 2;
+            position: relative;
         }
         .enter-btn:hover {
             opacity: 0.9;
             transform: scale(1.05);
         }
 
-        /* 第二页 照片轮播样式 */
+        /* 第一页署名 */
+        .signature {
+            position: absolute;
+            bottom: 50px;
+            font-size: 20px;
+            color: #c86b85;
+            letter-spacing: 4px;
+        }
+
+        /* 第二页样式美化 */
+        .page2-title {
+            font-size: 32px;
+            color: #c86b85;
+            margin: 20px 0;
+            letter-spacing: 6px;
+        }
         .swiper-box {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            margin: 40px auto;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(200, 107, 133, 0.15);
+            max-width: 620px;
+            margin: 20px auto;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(200, 107, 133, 0.2);
             overflow: hidden;
+            background: #fff;
         }
         .swiper-img {
             width: 100%;
-            height: 400px;
+            height: 420px;
             object-fit: cover;
             display: block;
         }
         .img-desc {
-            padding: 15px;
-            background: rgba(255,255,255,0.9);
+            padding: 16px;
+            background: rgba(255,255,255,0.92);
             color: #c86b85;
-            font-size: 16px;
+            font-size: 17px;
         }
         .swiper-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.8);
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.85);
             border: none;
             border-radius: 50%;
-            font-size: 20px;
+            font-size: 22px;
             color: #c86b85;
             cursor: pointer;
             z-index: 10;
         }
-        .prev { left: 15px; }
-        .next { right: 15px; }
+        .prev { left: 20px; }
+        .next { right: 20px; }
 
-        .blessing {
+        .page2-text {
             max-width: 700px;
-            margin: 0 auto;
-            line-height: 2;
+            margin: 30px auto;
+            line-height: 2.3;
             color: #555;
-            font-size: 17px;
+            font-size: 18px;
+            padding: 0 20px;
         }
         .back-btn {
-            margin-top: 40px;
-            padding: 12px 35px;
+            margin-top: 20px;
+            padding: 12px 38px;
             background: #c86b85;
             color: #fff;
             border: none;
             border-radius: 50px;
             font-size: 16px;
             cursor: pointer;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            transform: scale(1.05);
         }
 
         /* 移动端适配 */
         @media (max-width: 600px) {
-            .main-title { font-size: 36px; letter-spacing: 4px; }
-            .couplet-left { left: 10px; font-size: 18px; }
-            .couplet-right { right: 10px; font-size: 18px; }
-            .swiper-img { height: 280px; }
+            .main-title { font-size: 38px; letter-spacing: 5px; }
+            .couplet-left { left: 10px; font-size: 18px; letter-spacing: 4px; }
+            .couplet-right { right: 10px; font-size: 18px; letter-spacing: 4px; }
+            .page1-bless { font-size: 16px; }
+            .signature { font-size: 17px; }
+            .swiper-img { height: 290px; }
+            .page2-title { font-size: 26px; }
+            .decor { font-size: 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- 两侧对联 -->
+    <!-- 两侧竖对联 -->
     <div class="couplet-left">春晖润养育恩深</div>
     <div class="couplet-right">慈爱暖心岁月长</div>
 
-    <!-- 第一页：首页大标题 -->
+    <!-- 第一页：首页 丰富元素+祝福语+署名许扬 -->
     <div class="page page1">
+        <!-- 装饰元素 -->
+        <div class="decor d1">🌸</div>
+        <div class="decor d2">💐</div>
+        <div class="decor d3">🌷</div>
+        <div class="decor d4">💖</div>
+
         <h1 class="main-title">母亲节快乐</h1>
-        <button class="enter-btn" onclick="goPage2()">点击查看妈妈照片</button>
+
+        <div class="page1-bless">
+            世间温柔，皆不及母亲半分<br>
+            感恩岁月有您相伴，岁岁年年皆安康<br>
+            愿时光慢些走，愿妈妈永远美丽无忧
+        </div>
+
+        <button class="enter-btn" onclick="goPage2()">点击浏览妈妈照片</button>
+
+        <!-- 底部署名 -->
+        <div class="signature">—— 许扬 敬上</div>
     </div>
 
-    <!-- 第二页：照片展示页 -->
+    <!-- 第二页：照片展示页 丰富画面元素 -->
     <div class="page page2">
+        <!-- 装饰元素 -->
+        <div class="decor d1">🌸</div>
+        <div class="decor d2">💐</div>
+        <div class="decor d3">🌷</div>
+        <div class="decor d4">💖</div>
+
+        <h2 class="page2-title">致我最亲爱的妈妈</h2>
+
         <div class="swiper-box">
             <button class="swiper-btn prev" onclick="prevImg()">‹</button>
             <img id="swiperImg" class="swiper-img" alt="妈妈照片">
@@ -162,16 +238,17 @@
             <button class="swiper-btn next" onclick="nextImg()">›</button>
         </div>
 
-        <div class="blessing">
-            <p>感谢您默默付出，温柔伴我岁岁年年</p>
-            <p>愿时光温柔以待，愿妈妈永远平安喜乐、康健无忧</p>
+        <div class="page2-text">
+            您用青春岁月，换我平安成长<br>
+            您用温柔包容，暖我岁岁日常<br>
+            不求时光偏爱，只愿妈妈一生健康、喜乐、安然
         </div>
 
         <button class="back-btn" onclick="goPage1()">返回首页</button>
     </div>
 
     <script>
-        // 切换页面
+        // 页面切换
         function goPage1(){
             document.querySelector('.page1').style.display = 'flex';
             document.querySelector('.page2').style.display = 'none';
@@ -181,11 +258,11 @@
             document.querySelector('.page2').style.display = 'block';
         }
 
-        // 读取仓库本地照片 1.jpg 2.jpg 3.jpg
+        // 仓库本地照片
         let photoList = [
             { url: "1.png", desc: "我最亲爱的妈妈" },
-            { url: "2.png", desc: "岁月温柔，感恩有你" },
-            { url: "3.png", desc: "愿妈妈永远美好" }
+            { url: "2.png", desc: "岁月静好，感恩有您" },
+            { url: "3.png", desc: "愿妈妈一生平安喜乐" }
         ];
 
         let currentIndex = 0;
@@ -205,9 +282,7 @@
             showPhoto();
         }
 
-        // 自动轮播
         setInterval(nextImg, 3000);
-        // 页面加载初始化照片
         window.onload = showPhoto;
     </script>
 </body>
