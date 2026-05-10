@@ -26,7 +26,6 @@
             text-align: center;
         }
 
-        /* 顶部标题区 */
         .header {
             margin: 50px 0 20px;
         }
@@ -41,33 +40,6 @@
             color: #666;
         }
 
-        /* 上传照片按钮 */
-        .upload-box {
-            margin: 20px 0;
-        }
-        #photoUpload {
-            display: none;
-        }
-        .upload-btn {
-            padding: 10px 25px;
-            background: #D885A3;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .upload-btn:hover {
-            opacity: 0.9;
-        }
-        .upload-tip {
-            font-size: 14px;
-            color: #999;
-            margin-top: 8px;
-        }
-
-        /* 照片轮播区 */
         .swiper-box {
             position: relative;
             width: 100%;
@@ -106,7 +78,6 @@
         .prev { left: 15px; }
         .next { right: 15px; }
 
-        /* 祝福文案区 */
         .blessing {
             margin: 60px 0;
             padding: 0 20px;
@@ -122,7 +93,6 @@
             font-weight: bold;
         }
 
-        /* 底部署名区 */
         .footer {
             margin: 50px 0 30px;
             color: #999;
@@ -132,7 +102,6 @@
             color: #D885A3;
         }
 
-        /* 移动端适配 */
         @media (max-width: 600px) {
             .title { font-size: 26px; }
             .swiper-img { height: 300px; }
@@ -142,91 +111,60 @@
 </head>
 <body>
     <div class="container">
-        <!-- 标题区 -->
         <div class="header">
             <h1 class="title">❤️ 母亲节快乐 · 致我最爱的妈妈 ❤️</h1>
             <p class="subtitle">谢谢你陪我长大，你永远是我的人间温柔</p>
         </div>
 
-        <!-- 上传照片区域（核心功能） -->
-        <div class="upload-box">
-            <label for="photoUpload" class="upload-btn">📸 上传妈妈的照片</label>
-            <input type="file" id="photoUpload" accept="image/*" multiple>
-            <p class="upload-tip">支持多选图片，最多上传 9 张，自动轮播展示</p>
-        </div>
-
-        <!-- 照片轮播区 -->
         <div class="swiper-box">
             <button class="swiper-btn prev" onclick="prevImg()">‹</button>
-            <img id="swiperImg" class="swiper-img" src="https://picsum.photos/600/400" alt="母亲照片">
-            <p id="imgDesc" class="img-desc">妈妈最美的模样</p>
+            <img id="swiperImg" class="swiper-img" alt="母亲照片">
+            <p id="imgDesc" class="img-desc"></p>
             <button class="swiper-btn next" onclick="nextImg()">›</button>
         </div>
 
-        <!-- 祝福文案 -->
         <div class="blessing">
             <p>感谢你用一生的温柔与付出，守护我长大，包容我的所有小脾气。</p>
             <p>岁月从不败美人，愿我的妈妈<span class="highlight">平安健康、永远开心、岁月温柔以待</span>。</p>
             <p>你陪我蹒跚学步，我陪你夕阳漫步，余生漫漫，我会一直爱你。</p>
         </div>
 
-        <!-- 署名 -->
         <div class="footer">
-            <span>💐</span> 爱你的孩子：XXX · 20XX年母亲节 <span>💐</span>
+            <span>💐</span> 爱你的孩子：XXX · 2026年母亲节 <span>💐</span>
         </div>
     </div>
 
     <script>
-        // 照片数组（上传后自动替换，无需手动修改）
-        let photoList = [];
+        // ✅ 核心：加载 GitHub 仓库内的本地图片（同级文件）
+        let photoList = [
+            { url: "1.jpg", desc: "妈妈最美的模样" },
+            { url: "2.jpg", desc: "陪我长大的你" },
+            { url: "3.jpg", desc: "永远温柔的妈妈" }
+        ];
+
         let currentIndex = 0;
         const imgDom = document.getElementById("swiperImg");
         const descDom = document.getElementById("imgDesc");
-        const uploadDom = document.getElementById("photoUpload");
 
-        // 监听图片上传（核心：上传文件替换照片）
-        uploadDom.addEventListener('change', function(e) {
-            const files = e.target.files;
-            if (!files.length) return;
-            // 限制最多9张照片
-            const maxFiles = 9;
-            const validFiles = Array.from(files).slice(0, maxFiles);
-            
-            // 清空原有照片
-            photoList = [];
-            // 生成本地图片预览链接
-            validFiles.forEach(file => {
-                const imgUrl = URL.createObjectURL(file);
-                photoList.push({ url: imgUrl, desc: "妈妈最美的模样" });
-            });
-            
-            // 重置轮播并显示第一张
-            currentIndex = 0;
+        window.onload = function(){
             showPhoto();
-        });
+        };
 
-        // 显示当前照片
         function showPhoto() {
-            if (photoList.length === 0) return;
             imgDom.src = photoList[currentIndex].url;
             descDom.innerText = photoList[currentIndex].desc;
         }
 
-        // 上一张
         function prevImg() {
-            if (photoList.length === 0) return;
             currentIndex = (currentIndex - 1 + photoList.length) % photoList.length;
             showPhoto();
         }
 
-        // 下一张
         function nextImg() {
-            if (photoList.length === 0) return;
             currentIndex = (currentIndex + 1) % photoList.length;
             showPhoto();
         }
 
-        // 自动轮播
         setInterval(nextImg, 3000);
     </script>
 </body>
